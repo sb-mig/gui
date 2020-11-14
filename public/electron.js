@@ -1,8 +1,45 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
 const { autoUpdater } = require("electron-updater")
 const fs = require("fs")
 const path = require("path")
+
+function createMenu() {
+    const menuTemplate = [
+        { role: 'appMenu' },
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Open',
+                    click: () => {
+                        console.log("you clicked Open!")
+                    }
+                }
+            ],
+        },
+        {
+            label: 'Versions',
+            submenu: [
+                {
+                    label: 'GUI Version',
+                    click: () => {
+                        console.log("You use GUID sb-mig version x.x.x")
+                    }
+                },
+                {
+                    label: 'sb-mig Version',
+                    click: () => {
+                        console.log("You use sb-mig version x.x.x")
+                    }
+                }
+            ],
+        }
+    ]
+
+    const menu = Menu.buildFromTemplate(menuTemplate)
+    Menu.setApplicationMenu(menu)
+}
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -17,7 +54,10 @@ function createWindow () {
   // win.loadFile('./build/index.html')
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+    createWindow()
+    createMenu()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
