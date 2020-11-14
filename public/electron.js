@@ -47,7 +47,7 @@ function createWindow () {
     height: 900,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
   })
 
   win.loadURL(isDev ? `http://localhost:3000` : `file://${path.join(__dirname, "../build/index.html")}`)
