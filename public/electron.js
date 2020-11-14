@@ -4,6 +4,7 @@ const isDev = require('electron-is-dev')
 const { autoUpdater } = require("electron-updater")
 const fs = require("fs")
 const path = require("path")
+const package = require('../package.json')
 
 function getSbMigVersionInDialog() {
     const sbMigVersion = execa.commandSync('sb-mig version', {
@@ -18,11 +19,10 @@ function getSbMigVersionInDialog() {
 }
 
 function getGUISbMigVersionInDialog() {
-    const sbMigGuiVersion = '0.0.1'
     dialog.showMessageBoxSync({
         type: 'error',
         title: "sb-mig GUI Version",
-        message: `${sbMigGuiVersion}`
+        message: `${package.version}`
     })
 }
 
