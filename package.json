@@ -6,7 +6,7 @@
   "main": "public/electron.js",
   "build": {
     "appId": "com.marckraw.sb-mig",
-    "productName": "SB-MIG",
+    "productName": "sb-mig",
     "files": [
       "build/**/*",
       "node_modules/**/*"
