@@ -1,8 +1,31 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron')
+const execa = require('execa')
 const isDev = require('electron-is-dev')
 const { autoUpdater } = require("electron-updater")
 const fs = require("fs")
 const path = require("path")
+
+function getSbMigVersionInDialog() {
+    const sbMigVersion = execa.commandSync('sb-mig version', {
+        shell: true
+    })
+
+    dialog.showMessageBoxSync({
+        type: 'error',
+        title: "sb-mig Version",
+        message: `${sbMigVersion.stdout}`
+    })
+}
+
+function getGUISbMigVersionInDialog() {
+    const sbMigGuiVersion = '0.0.1'
+    dialog.showMessageBoxSync({
+        type: 'error',
+        title: "sb-mig GUI Version",
+        message: `${sbMigGuiVersion}`
+    })
+}
+
 
 function createMenu() {
     const menuTemplate = [
@@ -24,13 +47,14 @@ function createMenu() {
                 {
                     label: 'GUI Version',
                     click: () => {
+                        getGUISbMigVersionInDialog()
                         console.log("You use GUID sb-mig version x.x.x")
                     }
                 },
                 {
                     label: 'sb-mig Version',
                     click: () => {
-                        console.log("You use sb-mig version x.x.x")
+                        getSbMigVersionInDialog()
                     }
                 }
             ],
