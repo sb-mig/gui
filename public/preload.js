@@ -14,7 +14,7 @@ const runCommand = (command, pathToDir) => {
   // return child_process.execSync(command, { cwd: pathToDir }).toString().trim()
 }
 
-let runCommandAdvanced = ({command, onout, onerr, ondone, pathToDir}) => {
+const runCommandAdvanced = ({command, onout, onerr, ondone, pathToDir}) => {
   const proc = child_process.spawn(
       command,
       [],
@@ -43,7 +43,7 @@ let sysInfo = {
   ip: runCommand("ipconfig getifaddr en0"),
 }
 
-function df() {
+const df = () => {
   let output = runCommand("df -kP")
   let rows = output
       .split(/[\r\n]+/)
@@ -55,6 +55,8 @@ function df() {
           .split(/\t/)
   ))
 }
+
+const currentDirectory = () => process.cwd();
 
 // As an example, here we use the exposeInMainWorld API to expose the browsers
 // and node versions to the main window.
