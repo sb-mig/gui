@@ -13,6 +13,12 @@
     ],
     "win": {
       "target": "nsis"
+    },
+    "mac": {
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "extraFiles": [],
+      "entitlements": "./build/entitlements.mac.plist"
     }
   },
   "homepage": "./",
@@ -24,8 +30,11 @@
     "eject": "react-scripts eject",
     "electron-build": "electron-builder",
     "build-locally": "npm run react-build && npm run electron-build",
+    "pack": "DEBUG=electron-builder electron-builder --dir",
     "build": "npm run react-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "release": "yarn run build",
+    "copy:appSettings": "echo 'here we will copy settings...'",
+    "start": "yarn run copy:appSettings && concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "license": "ISC",
   "dependencies": {
@@ -47,7 +56,7 @@
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
-    "electron": "^10.1.5",
+    "electron": "^11.2.0",
     "electron-builder": "^22.9.1"
   },
   "eslintConfig": {
