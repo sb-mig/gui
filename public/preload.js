@@ -1,9 +1,21 @@
 // public/preload.js
 
+const { readdir } = require("fs/promises")
 const child_process = require("child_process")
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 const { contextBridge } = require("electron");
+const shellPath = require('shell-path')
+
+const currentDirectory = () => process.cwd();
+
+const directoryContents = async (path) => {
+  const results = await readdir(path, {withFileTypes: true})
+  return results.map(entry => ({
+    name: entry.name,
+    type: entry.isDirectory() ? "directory" : "file",
+  }))
+}
 
 const runCommand = (command, pathToDir) => {
   return new Promise((resolve, reject) => {
@@ -14,11 +26,16 @@ const runCommand = (command, pathToDir) => {
   // return child_process.execSync(command, { cwd: pathToDir }).toString().trim()
 }
 
-const runCommandAdvanced = ({command, onout, onerr, ondone, pathToDir}) => {
+const runCommandAdvanced = async ({command, onout, onerr, ondone, pathToDir}) => {
+  const injectablePATH = await shellPath()
+
   const proc = child_process.spawn(
       command,
       [],
       {
+        env: {
+          PATH: injectablePATH
+        },
         cwd: pathToDir,
         shell: true,
         stdio: ["ignore", "pipe", "pipe"],
@@ -56,7 +73,9 @@ const df = () => {
   ))
 }
 
-const currentDirectory = () => process.cwd();
+const showPath = () => {
+  return process.env.PATH;
+}
 
 // As an example, here we use the exposeInMainWorld API to expose the browsers
 // and node versions to the main window.
@@ -67,6 +86,9 @@ process.once("loaded", () => {
     runCommand,
     runCommandAdvanced,
     sysInfo,
+    directoryContents,
+    currentDirectory,
+    showPath,
     df
   });
 });

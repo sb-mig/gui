@@ -82,11 +82,6 @@ function createWindow() {
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
-
-  console.log("dirrname: ", __dirname)
-  console.log("process.cwd(): ", process.cwd())
-  console.log("app.getAppPath(): ", app.getAppPath())
-  autoUpdater.checkForUpdatesAndNotify();
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
@@ -128,3 +123,4 @@ app.on('window-all-closed', () => {
 
 
 require('./test')
+const fixPath = require("fix-path");

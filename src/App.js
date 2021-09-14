@@ -30,7 +30,7 @@ const App = () => {
 
     window.api.runCommandAdvanced({command,onout,onerr,ondone, pathToDir})
   }
-  
+
   const pathToDir = '/Users/marckraw/Projects/EF/ef-sbc/@documentation'
 
   const syncSchemasAllComponentsWithExtension = () => {
@@ -57,6 +57,16 @@ const App = () => {
     run("sb-mig backup --allPresets", pathToDir)
   }
 
+  const showDirectoryContent = async () => {
+    const directory = window.api.currentDirectory()
+    const data = await window.api.directoryContents(directory)
+    console.log(data)
+  }
+
+  const showPath = () => {
+    return window.api.showPath()
+  }
+
   const cleanOutput = () => {
     setStdout('')
     setStderr('')
@@ -75,7 +85,12 @@ const App = () => {
       <button onClick={backupAllPresets}>Backup All Presets</button>
       <hr/>
       <button onClick={cleanOutput}>Clean CommandsOutput</button>
+      <hr/>
+      <button onClick={showDirectoryContent}>Show dir content</button>
 
+      <pre>
+        {showPath()}
+      </pre>
       <CommandsOutput stderr={stderr} stdout={stdout} running={running} loading={loading} />
     </div>
   );
