@@ -123,4 +123,3 @@ app.on('window-all-closed', () => {
 
 
 require('./test')
-const fixPath = require("fix-path");

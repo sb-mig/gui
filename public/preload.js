@@ -1,20 +1,66 @@
 // public/preload.js
 
-const { readdir } = require("fs/promises")
+const { readdir, readlink, stat } = require("fs/promises")
 const child_process = require("child_process")
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
 const { contextBridge } = require("electron");
 const shellPath = require('shell-path')
+const path = require("path")
 
 const currentDirectory = () => process.cwd();
 
+const fileInfo = async (basePath, entry) => {
+  const {name} = entry
+  const fullPath = path.join(basePath, name)
+  let linkTarget = null
+  let fileStat
+
+  if (entry.isSymbolicLink()) {
+    linkTarget = await readlink(fullPath)
+  }
+
+  // This most commonly happens with broken symlinks
+  // but could also happen if the file is deleted
+  // while we're checking it as race condition
+  try {
+    fileStat = await stat(fullPath)
+  } catch {
+    return {
+      name,
+      type: "broken",
+      linkTarget,
+    }
+  }
+
+  let {size, mtime} = fileStat
+
+  if (fileStat.isDirectory()) {
+    return {
+      name,
+      type: "directory",
+      mtime,
+      linkTarget,
+    }
+  } else if (fileStat.isFile()) {
+    return {
+      name,
+      linkTarget,
+      type: "file",
+      size,
+      mtime,
+    }
+  } else {
+    return {
+      name,
+      type: "special",
+    }
+  }
+}
+
 const directoryContents = async (path) => {
   const results = await readdir(path, {withFileTypes: true})
-  return results.map(entry => ({
-    name: entry.name,
-    type: entry.isDirectory() ? "directory" : "file",
-  }))
+  return await Promise.all(results.map(entry => fileInfo(path, entry)))
 }
 
 const runCommand = (command, pathToDir) => {
@@ -23,7 +69,6 @@ const runCommand = (command, pathToDir) => {
       resolve({stdout, stderr, error})
     })
   })
-  // return child_process.execSync(command, { cwd: pathToDir }).toString().trim()
 }
 
 const runCommandAdvanced = async ({command, onout, onerr, ondone, pathToDir}) => {

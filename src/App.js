@@ -75,6 +75,8 @@ const App = () => {
 
   return (
     <div>
+      <h3>working directory: {pathToDir}</h3>
+      <hr/>
       <button onClick={syncSchemasAllComponentsWithExtension}>Sync schemas (all components with extension)</button>
       <button onClick={syncSchemasAllComponentsWithExtensionWithPresets}>Sync schemas (all components with extension and presets)</button>
       <hr/>
