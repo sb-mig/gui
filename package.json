@@ -1,6 +1,6 @@
 {
   "name": "@sb-mig/desktop-app",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "author": "Marcin Krawczyk <marckraw@icloud.com>",
   "description": "sb-mig desktop app",
   "main": "public/electron.js",
