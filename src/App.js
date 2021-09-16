@@ -1,15 +1,10 @@
 import React from "react";
-
-import Header from './components/Header'
-import Content from './components/Content'
+import MainRouter from './components/MainRouter'
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      <Content />
-    </div>
-  );
+      <MainRouter />
+  )
 };
 
 export default App;
