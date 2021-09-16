@@ -11,11 +11,6 @@ const App = () => {
   const [error, setError] = useState('')
   const data = useContext(GlobalDataContext)
 
-  console.log("This is defauylt data from global data context")
-  console.log(data)
-
-  console.log(window.api)
-
   const run = (command, pathToDir) => {
     setLoading(true)
     setRunning(true)
@@ -63,13 +58,13 @@ const App = () => {
   }
 
   const showDirectoryContent = async () => {
-    const directory = window.api.currentDirectory()
-    const data = await window.api.directoryContents(directory)
-    console.log(data)
-  }
-
-  const showPath = () => {
-    return window.api.showPath()
+    try {
+      const temp = await window.api.directoryContents(data.workDir)
+      console.log(temp)
+    } catch (e) {
+      console.log("error happened")
+      console.log(e)
+    }
   }
 
   const cleanOutput = () => {
@@ -94,10 +89,6 @@ const App = () => {
       <button onClick={cleanOutput}>Clean CommandsOutput</button>
       <hr/>
       <button onClick={showDirectoryContent}>Show dir content</button>
-
-      <pre>
-        {showPath()}
-      </pre>
       <CommandsOutput stderr={stderr} stdout={stdout} running={running} loading={loading} />
     </div>
   );
