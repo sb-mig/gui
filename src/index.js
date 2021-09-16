@@ -4,12 +4,21 @@ import './styles/main.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalDataContextProvider from "./contexts/GlobalDataContext";
+import SbMigContextProvider from "./contexts/sb-migContext";
+import ConsoleContextProvider from "./contexts/ConsoleContext";
+import GlobalStatusContextProvider from "./contexts/GlobalStatusContext";
 
 ReactDOM.render(
     <React.StrictMode>
-      <GlobalDataContextProvider>
-        <App />
-      </GlobalDataContextProvider>
+      <GlobalStatusContextProvider>
+        <ConsoleContextProvider>
+          <GlobalDataContextProvider>
+            <SbMigContextProvider>
+                <App />
+            </SbMigContextProvider>
+          </GlobalDataContextProvider>
+        </ConsoleContextProvider>
+      </GlobalStatusContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

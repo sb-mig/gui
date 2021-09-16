@@ -16,7 +16,7 @@ const GlobalDataContextProvider = (props) => {
   useEffect(() => {
     (async () => {
       console.log("useeffect from GlobalDataContext")
-      const dir = window.api.ipc.receive('fromMain', (data) => {
+      window.api.ipc.receive('fromMain', (data) => {
         console.log(data)
         setWorkDir(data.filePaths[0])
       })
