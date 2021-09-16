@@ -31,30 +31,28 @@ const App = () => {
     window.api.runCommandAdvanced({command,onout,onerr,ondone, pathToDir})
   }
 
-  const pathToDir = '/Users/marckraw/Projects/EF/ef-sbc/@documentation'
-
   const syncSchemasAllComponentsWithExtension = () => {
-    run("sb-mig sync components --all --ext", pathToDir)
+    run("sb-mig sync components --all --ext", data.workDir)
   }
 
   const syncSchemasAllComponentsWithExtensionWithPresets = () => {
-    run("sb-mig sync components --all --ext --presets", pathToDir)
+    run("sb-mig sync components --all --ext --presets", data.workDir)
   }
 
   const showDebug = () => {
-    run("sb-mig debug", pathToDir)
+    run("sb-mig debug", data.workDir)
   }
 
   const showVersion = () => {
-    run("sb-mig --version", pathToDir)
+    run("sb-mig --version", data.workDir)
   }
 
   const backupAllComponents = async () => {
-    run("sb-mig backup --allComponents", pathToDir)
+    run("sb-mig backup --allComponents", data.workDir)
   }
 
   const backupAllPresets = () => {
-    run("sb-mig backup --allPresets", pathToDir)
+    run("sb-mig backup --allPresets", data.workDir)
   }
 
   const showDirectoryContent = async () => {
