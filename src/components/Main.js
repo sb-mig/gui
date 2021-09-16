@@ -1,8 +1,8 @@
-import {useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import CommandsOutput from "./CommandsOutput";
 import {GlobalDataContext} from "../contexts/GlobalDataContext";
-
-import styled, {css} from 'styled-components'
+import styled, {css, keyframes} from 'styled-components'
+import Status from "./Status";
 
 const Button = styled.button`
   border-radius: 3px;
@@ -102,7 +102,8 @@ const Main = () => {
   return (
       <div>
         <h3>working directory: {data?.workDir}</h3>
-        <Button>asdasd</Button>
+        Loading: <Status loading={loading} />
+        Running: <Status loading={running} />
         <hr/>
         <Button onClick={syncSchemasAllComponentsWithExtension}>Sync schemas (all components with extension)
         </Button>

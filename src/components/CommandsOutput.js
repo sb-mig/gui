@@ -5,7 +5,6 @@ const CommandsOutput = (props) => {
 
   return (
       <div>
-        <h1>Status = Loading: {loading ? <span>Loading</span> : <span>Done</span>} ------------- Running: {running ? <span>Running</span>: <span>Done</span>}</h1>
         <h3>Messages</h3>
         {
           loading ? 'Loading' : (
