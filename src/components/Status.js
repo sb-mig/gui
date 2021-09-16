@@ -4,8 +4,8 @@ const Ready = styled.div`
   border-radius: 50%;
   background: green;
   border: 1px solid black;
-  height: 40px;
-  width: 40px;
+  height: 26px;
+  width: 26px;
 `
 
 const rotate360 = keyframes`

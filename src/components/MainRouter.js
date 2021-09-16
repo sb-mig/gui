@@ -2,27 +2,33 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import Main from './Main'
+import Navigation from "./Navigation";
+import Status from "./Status";
+import React, {useContext} from "react";
+import {GlobalStatusContext} from "../contexts/GlobalStatusContext";
+import {Header} from "./styled/Header";
+import {StatusBar} from "./styled/StatusBar";
 
 const MainRouter = () => {
+  const {loading, running} = useContext(GlobalStatusContext)
+
   return (
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-            </ul>
-          </nav>
+        <Header>
+          <Navigation />
+          <StatusBar>
+            <div>
+              <Status loading={loading} />
+              <div>Loading</div>
+            </div>
+            <div>
+              <Status loading={running} />
+              <div>Running</div>
+            </div>
+          </StatusBar>
+        </Header>
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -37,7 +43,6 @@ const MainRouter = () => {
               <Main />
             </Route>
           </Switch>
-        </div>
       </Router>
   )
 }

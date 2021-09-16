@@ -19,10 +19,17 @@ const ConsoleContextProvider = (props) => {
   const [stderr, setStderr] = useState('')
   const [error, setError] = useState('')
 
+  const cleanOutput = () => {
+    setStdout('')
+    setStderr('')
+    setError('')
+  }
+
   return (
       <ConsoleContext.Provider value={{
         output, stdout, stderr, error,
-        setOutput, setStdout, setStderr, setError
+        setOutput, setStdout, setStderr, setError,
+        cleanOutput
       }}>
         {props.children}
       </ConsoleContext.Provider>

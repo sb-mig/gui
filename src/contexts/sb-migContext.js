@@ -16,8 +16,6 @@ const SbMigContextProvider = (props) => {
   const {setLoading, setRunning} = useContext(GlobalStatusContext)
   const {setStdout, setStderr, setError} = useContext(ConsoleContext)
 
-  console.log(workDir)
-
   const run = (command, pathToDir) => {
     setLoading(true)
     setRunning(true)
@@ -47,7 +45,6 @@ const SbMigContextProvider = (props) => {
   }
 
   const showDebug = () => {
-    console.log("ruuuuuuning")
     run("sb-mig debug", workDir)
   }
 
@@ -63,12 +60,6 @@ const SbMigContextProvider = (props) => {
     run("sb-mig backup --allPresets", workDir)
   }
 
-  const cleanOutput = () => {
-    setStdout('')
-    setStderr('')
-    setError('')
-  }
-
   return (
       <SbMigContext.Provider value={{
         data,
@@ -80,7 +71,6 @@ const SbMigContextProvider = (props) => {
           showVersion,
           backupAllComponents,
           backupAllPresets,
-          cleanOutput
         }
       }}>
         {props.children}
