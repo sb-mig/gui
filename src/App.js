@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import CommandsOutput from "./components/CommandsOutput";
+import {GlobalDataContext} from "./contexts/GlobalDataContext";
 
 const App = () => {
   const [loading, setLoading] = useState(false)
@@ -8,6 +9,10 @@ const App = () => {
   const [stdout, setStdout] = useState('')
   const [stderr, setStderr] = useState('')
   const [error, setError] = useState('')
+  const data = useContext(GlobalDataContext)
+
+  console.log("This is defauylt data from global data context")
+  console.log(data)
 
   console.log(window.api)
 
@@ -75,7 +80,7 @@ const App = () => {
 
   return (
     <div>
-      <h3>working directory: {pathToDir}</h3>
+      <h3>working directory: {data?.workDir}</h3>
       <hr/>
       <button onClick={syncSchemasAllComponentsWithExtension}>Sync schemas (all components with extension)</button>
       <button onClick={syncSchemasAllComponentsWithExtensionWithPresets}>Sync schemas (all components with extension and presets)</button>

@@ -5,6 +5,13 @@ const {autoUpdater} = require("electron-updater")
 const fs = require("fs")
 const path = require("path")
 const package = require('../package.json')
+const {initializeStore} = require('./store.node')
+
+const store = initializeStore()
+
+ipcMain.handle('getStoreValue', (event, key) => store.get(key))
+
+let mainWindow;
 
 function getSbMigVersionInDialog() {
   const sbMigVersion = execa.commandSync('sb-mig version', {
@@ -33,9 +40,11 @@ function createMenu() {
       label: 'File',
       submenu: [
         {
-          label: 'Open',
-          click: () => {
-            console.log("you clicked Open!")
+          label: 'Open your project to work with',
+          click: async () => {
+            const selectedDirectory = await dialog.showOpenDialog({ properties: ['openDirectory'] })
+            mainWindow.webContents.send('fromMain', selectedDirectory)
+            store.set('workingDirectory', selectedDirectory);
           }
         }
       ],
@@ -65,7 +74,7 @@ function createMenu() {
 }
 
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1600,
     height: 900,
     title: "sb-mig GUI",

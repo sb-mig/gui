@@ -1,10 +1,9 @@
 // public/preload.js
-
 const { readdir, readlink, stat } = require("fs/promises")
 const child_process = require("child_process")
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const shellPath = require('shell-path')
 const path = require("path")
 
@@ -122,6 +121,8 @@ const showPath = () => {
   return process.env.PATH;
 }
 
+const workingDirectory = ipcRenderer.invoke('getStoreValue', 'workingDirectory');
+
 // As an example, here we use the exposeInMainWorld API to expose the browsers
 // and node versions to the main window.
 // They'll be accessible at "window.versions".
@@ -134,6 +135,23 @@ process.once("loaded", () => {
     directoryContents,
     currentDirectory,
     showPath,
-    df
+    df,
+    workingDirectory,
+    ipc: {
+      send: (channel, data) => {
+        // whitelist channels
+        let validChannels = ["toMain"];
+        if (validChannels.includes(channel)) {
+          ipcRenderer.send(channel, data);
+        }
+      },
+      receive: (channel, func) => {
+        let validChannels = ["fromMain"];
+        if (validChannels.includes(channel)) {
+          // Deliberately strip event as it includes `sender`
+          ipcRenderer.on(channel, (event, ...args) => func(...args));
+        }
+      },
+    }
   });
 });
